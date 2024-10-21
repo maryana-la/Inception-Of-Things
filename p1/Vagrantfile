@@ -1,0 +1,68 @@
+Vagrant.configure("2") do |config|
+    config.vm.define "okushnirS" do |server|
+      server.vm.box = "debian/bookworm64"
+      server.vm.box_version = "12.20240905.1"
+      server.vm.hostname = "okushnirS"
+      server.vm.network "private_network", ip: "192.168.56.110"
+      server.vm.network "forwarded_port", guest: 6443, host: 6443
+      server.vm.provider "virtualbox" do |vb|
+        vb.name = "Server"
+        vb.memory = "1024"
+        vb.cpus = 1
+      end
+      
+      server.vm.provision "shell", inline: <<-SHELL
+        sudo apt-get update -y
+        sudo apt-get install -y curl
+      
+        curl -sfL https://get.k3s.io | sh -s - --node-external-ip 192.168.56.110
+      
+        sleep 10
+      
+        K3S_TOKEN=$(sudo cat /var/lib/rancher/k3s/server/token)
+      
+        echo $K3S_TOKEN > /home/vagrant/k3s_token
+      
+        sudo curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+        sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+      
+        echo 'vagrant ALL=(ALL) NOPASSWD: ALL' | sudo tee /etc/sudoers.d/vagrant
+        sudo chmod 440 /etc/sudoers.d/vagrant
+      
+        mkdir -p /home/vagrant/.kube
+        
+        sudo cp /etc/rancher/k3s/k3s.yaml /home/vagrant/.kube/config
+        sudo chown vagrant:vagrant /home/vagrant/.kube/config
+        sudo chmod 600 /home/vagrant/.kube/config
+      
+      SHELL
+    end
+    
+    config.vm.define "okushnirSW" do |worker|
+      worker.vm.box = "debian/bookworm64"
+      worker.vm.box_version = "12.20240905.1"
+      worker.vm.hostname = "okushnirSW"
+      worker.vm.network "private_network", ip: "192.168.56.111"
+      worker.vm.provider "virtualbox" do |vb|
+        vb.name = "Worker"
+        vb.memory = "1024"
+        vb.cpus = 1
+      end
+      
+      worker.vm.provision "shell", inline: <<-SHELL
+        sudo apt-get update -y
+        sudo apt-get install -y curl
+      
+        K3S_TOKEN=$(ssh -o StrictHostKeyChecking=no vagrant@192.168.56.110 'cat /home/vagrant/k3s_token')
+        curl -sfL https://get.k3s.io | K3S_URL=https://192.168.56.110:6443 K3S_TOKEN=$K3S_TOKEN sh -
+      
+        sudo curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+        sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+      
+        echo 'vagrant ALL=(ALL) NOPASSWD: ALL' | sudo tee /etc/sudoers.d/vagrant
+        sudo chmod 440 /etc/sudoers.d/vagrant
+      
+      SHELL
+    end
+  end
+  
