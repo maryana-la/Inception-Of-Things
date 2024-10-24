@@ -1,0 +1,24 @@
+Vagrant.configure("2") do |config|
+    config.vm.box = "debian/bookworm64"
+    config.vm.box_version = "12.20240905.1"
+    config.vm.boot_timeout = 600
+  
+    config.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+      vb.cpus = 2
+      vb.linked_clone = true
+    end
+  
+    config.vm.define "okushnirS" do |server|
+      server.vm.hostname = "okushnirS"
+      server.vm.network "private_network", ip: "192.168.56.110"
+      server.vm.provider "virtualbox" do |vb|
+        vb.name = "okushnirS"
+      end
+      server.vm.provision "shell", path: "scripts/provision_server.sh"
+
+      server.vm.provision "shell", path: "scripts/apply_applications.sh"
+    end
+    
+  end
+  
