@@ -15,7 +15,7 @@ fi
 
 if ! command -v k3d &> /dev/null
 then
-    curl -s https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bash
+    curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
 else
     echo "K3D is already installed."
 fi
@@ -27,6 +27,15 @@ then
     sudo mv ./kubectl /usr/local/bin/
 else
     echo "kubectl is already installed."
+fi
+
+
+if ! command -v argocd &> /dev/null
+then
+    sudo curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+    sudo chmod +x /usr/local/bin/argocd
+else
+    echo "Argo CD CLI is already installed."
 fi
 
 echo "Installation completed."
