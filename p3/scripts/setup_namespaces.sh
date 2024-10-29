@@ -5,9 +5,9 @@ if ! command -v k3d &> /dev/null || ! command -v kubectl &> /dev/null; then
     echo "Error: k3d and kubectl are required but not installed."
     exit 1
 fi
-k3d cluster create my-cluster
+k3d cluster create IoT
 
-k3d kubeconfig get my-cluster > ~/.kube/config
+k3d kubeconfig get IoT > ~/.kube/config
 
 
 until kubectl cluster-info; do
@@ -30,10 +30,8 @@ until nc -z localhost 8082; do
 done
 
 ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo)
-echo $ARGOCD_PASSWORD > argocd_password.txt
 argocd login localhost:8082 --insecure --username admin --password $ARGOCD_PASSWORD
 argocd account update-password --account admin --current-password $ARGOCD_PASSWORD --new-password 7heavens
-
 
 
 kubectl create namespace dev
@@ -41,8 +39,6 @@ kubectl create namespace dev
 echo "Namespaces 'argocd' and 'dev' have been successfully created and configured."
 
 kubectl config set-context --current --namespace=argocd
-
-# argocd cluster add k3d-my-cluster
 
 argocd app create my-app \
   --repo https://github.com/OlgaKush512/okushnir_IoT.git \

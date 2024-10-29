@@ -1,4 +1,4 @@
 #!/bin/bash
 
-k3d cluster delete my-cluster
+k3d cluster delete IoT
 rm ~/.kube/config
