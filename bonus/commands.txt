@@ -1,0 +1,33 @@
+kubectl get pods -n gitlab
+
+# Если есть поды в статусах CrashLoopBackOff или Error, посмотрите их логи для диагностики:
+
+kubectl logs <pod-name> -n gitlab
+
+kubectl get pvc -n gitlab
+
+# Для проверки доступности GitLab с помощью Kubernetes выполните:
+
+kubectl get all -n gitlab
+
+# Проверка подключения к кластеру: Убедитесь, что кластер доступен, попробовав выполнить команду:
+
+kubectl cluster-info
+
+
+
+
+
+# The GitLab Runner chart (gitlab/gitlab-runner) is deployed without the `privileged` flag by default for security purposes. This can be changed by setting `gitlab-runner.runners.privileged` to `true`
+
+# Установка хранилища
+sudo kubectl get storageclass
+sudo kubectl patch storageclass <local-path> -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+
+sudo helm upgrade --install gitlab gitlab
+sudo helm -n gitlab upgrade --install gitlab gitlab --set certmanager-issuer.email=me@42.com --debug
+
+prometheus server - off
+
+
+
