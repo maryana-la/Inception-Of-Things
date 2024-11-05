@@ -17,11 +17,14 @@ sudo helm upgrade --install gitlab gitlab/gitlab \
   --timeout 1000s \
   --namespace gitlab \
   -f ../confs/gitlab-values.yaml \
-  --set certmanager-issuer.email=me@42.com \
+  --set certmanager-issuer.email=rchelsea@student.42.fr \
+  --set global.hosts.domain=iot.gitlab.com \
+  --set global.hosts.externalIP=0.0.0.0 \
+  --set global.hosts.https=false \
   --debug
 
 # add gitlab domain to hosts
-sudo echo "127.0.0.1 gitlab.local.com" | sudo tee -a "/etc/hosts" > /dev/null
+sudo echo "127.0.0.1 gitlab.iot.gitlab.com" | sudo tee -a "/etc/hosts" > /dev/null
 
 # waiting for gitlab to be ready
 sudo kubectl wait --for=condition=available --timeout=1800s deployment/gitlab-webservice-default -n gitlab

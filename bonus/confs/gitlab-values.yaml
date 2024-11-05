@@ -1,5 +1,3 @@
-# values-minikube.yaml
-# This example intended as baseline to use Minikube for the deployment of GitLab
 # - Minimized CPU/Memory load, can fit into 3 CPU, 6 GB of RAM (barely)
 # - Services that are not compatible with how Minikube runs are disabled
 # - Some services entirely removed, or scaled down to 1 replica.
