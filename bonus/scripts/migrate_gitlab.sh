@@ -1,21 +1,27 @@
 #!/bin/bash
 
 # # create user name and root for gitlab
-# GITLAB_PASS=$(sudo kubectl get secret gitlab-gitlab-initial-root-password -n gitlab -o jsonpath="{.data.password}" | base64 --decode)
-# sudo echo "machine gitlab.k3d.gitlab.com
-# login root
-# password ${GITLAB_PASS}" > ~/.netrc
-# sudo mv ~/.netrc /root/
-# sudo chmod 600 /root/.netrc
 
 
+if [ $# -eq 1 ]; then
+    echo "Please provide gitlab token to proceed."
+    exit 1
+fi
 #### todo project folder name, token as var
 
-#or use token for acces
-"PRIVATE-TOKEN: GITLAB_TOKEN" - add token to sh comand
-curl --header "PRIVATE-TOKEN:glpat-4sxpxtP5iN6z2gD8bMZF" -X POST "http://gitlab.iot.gitlab.com/api/v4/projects" \
-  --form "name=bonus_rchelsea" \
+#or use token for access
+GIT_PROJECT="bonus_app"
+GITLAB_TOKEN=$1
+curl --header "PRIVATE-TOKEN:$GITLAB_TOKEN" -X POST "http://gitlab.iot.gitlab.com/api/v4/projects" \
+  --form "name=$GIT_PROJECT" \
   --form "visibility=public"
+
+ GITLAB_PASS=$(sudo kubectl get secret gitlab-gitlab-initial-root-password -n gitlab -o jsonpath="{.data.password}" | base64 --decode)
+ sudo echo "machine gitlab.iot.gitlab.com
+ login root
+ password ${GITLAB_PASS}" > ~/.netrc
+ sudo mv ~/.netrc /root/
+ sudo chmod 600 /root/.netrc
 
 #Клонируйте репозиторий с GitHub в локальную директорию:
 git clone https://github.com/maryana-la/IOTbonus_app.git app_temp
@@ -34,25 +40,26 @@ rm -rf .git
 git init --initial-branch=main
 git config --local user.name "Administrator"
 git config --local user.email "rchelsea@student.42.fr"
-git remote add origin http://gitlab.iot.gitlab.com/root/bonus_rchelsea.git
+git remote add origin http://gitlab.iot.gitlab.com/root/$GIT_PROJECT.git
 git add .
 git commit -m "Initial commit"
-git push --set-upstream origin main
 
-git remote add origin https://root:glpat-4sxpxtP5iN6z2gD8bMZF@gitlab.iot.gitlab.com/root/bonus_rchelsea.git
-
-git remote set-url origin https://<TOKEN>@github.com/username/repository.git
-
-git push https://gitlab-ci-token:glpat-4sxpxtP5iN6z2gD8bMZF@gitlab.iot.gitlab.com/root/bonus_rchelsea.git main
-
-# option 2: keep history and push github repo to gitlab
-git remote rename origin old-origin
-git remote add origin http://gitlab.iot.gitlab.com/root/bonus.git
-# git push --set-upstream origin --all
-# git push --set-upstream origin --tags
+#git push --set-upstream origin main
+#
+#git remote add origin https://root:$GITLAB_TOKEN@gitlab.iot.gitlab.com/root/$GIT_PROJECT.git
+#
+#git remote set-url origin https://$GITLAB_TOKEN@github.com/username/$GIT_GIT_PROJECT.git
+#
+#git push https://gitlab-ci-token:$1@gitlab.iot.gitlab.com/root/$GIT_GIT_PROJECT.git main
+#
+## option 2: keep history and push github repo to gitlab
+#git remote rename origin old-origin
+#git remote add origin http://gitlab.iot.gitlab.com/root/$GIT_PROJECT.git
+ git push --set-upstream origin --all
+ git push --set-upstream origin --tags
 
 # use push with token to avoid paasword request:
-git push https://root:glpat-4sxpxtP5iN6z2gD8bMZF@gitlab.iot.gitlab.com/root/bonus_rchelsea.git
+#git push https://root:$GITLAB_TOKEN@gitlab.iot.gitlab.com/root/$GIT_GIT_PROJECT.git
 
 sudo kubectl apply -f ../confs/deploy.yaml -n argocd
 
