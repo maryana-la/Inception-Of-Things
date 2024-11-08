@@ -5,7 +5,7 @@ sudo apt-get install -y apt-transport-https ca-certificates curl software-proper
 
 if ! command -v docker &> /dev/null
 then
-    curl -fsSL https://get.docker.com -o get-docker.sh
+    sudo curl -fsSL https://get.docker.com -o get-docker.sh
     sh get-docker.sh
     sudo usermod -aG docker $USER
     echo "Docker installed. Please restart the terminal."
@@ -15,16 +15,16 @@ fi
 
 if ! command -v k3d &> /dev/null
 then
-    curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+    sudo curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
 else
     echo "K3D is already installed."
 fi
 
 if ! command -v kubectl &> /dev/null
 then
-    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    sudo curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 
-    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+    sudo curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
     echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
 
     sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
@@ -41,4 +41,4 @@ else
     echo "Argo CD CLI is already installed."
 fi
 
-echo "Installation completed."
+echo "Installation completed. Please restart terminal."
