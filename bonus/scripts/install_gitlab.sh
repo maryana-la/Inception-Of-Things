@@ -17,9 +17,9 @@ sudo helm upgrade --install gitlab gitlab/gitlab \
   --timeout 1000s \
   --namespace gitlab \
   -f ../confs/gitlab-values.yaml \
-  --set global.hosts.domain=gitlab.iot.gitlab.com \
+  --set global.hosts.domain=gitlab.iot.com \
   --set global.hosts.hostAliases[0].ip="127.0.0.1" \
-  --set global.hosts.hostAliases[0].hostnames[0]="gitlab.iot.gitlab.com" \
+  --set global.hosts.hostAliases[0].hostnames[0]="gitlab.iot.com" \
   --set global.hosts.hostAliases[0].hostnames[1]="localhost" \
   --set global.hosts.externalIP=0.0.0.0 \
   --set global.hosts.https=false \
@@ -27,7 +27,7 @@ sudo helm upgrade --install gitlab gitlab/gitlab \
   --debug
 
 # add gitlab domain to hosts
-sudo echo "127.0.0.1 gitlab.iot.gitlab.com" | sudo tee -a "/etc/hosts" > /dev/null
+sudo echo "127.0.0.1 gitlab.iot.com" | sudo tee -a "/etc/hosts" > /dev/null
 
 # waiting for gitlab to be ready
 sudo kubectl wait --for=condition=available --timeout=1800s deployment/gitlab-webservice-default -n gitlab
@@ -44,7 +44,7 @@ done &
 GITLAB_PASSWORD=$(sudo kubectl get secret gitlab-gitlab-initial-root-password -n gitlab -o jsonpath="{.data.password}" | base64 --decode)
 
 # save gitlab credentials
- sudo echo "machine gitlab.iot.gitlab.com
+ sudo echo "machine gitlab.iot.com
  login root
  password ${GITLAB_PASSWORD}" > ~/.netrc
  sudo cp ~/.netrc /root/

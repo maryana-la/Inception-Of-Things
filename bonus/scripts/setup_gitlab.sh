@@ -5,7 +5,7 @@
 
 if [ $# -ne 1 ]; then
     echo "Please provide gitlab token to proceed."
-    echo "Usage: ./*.sh <token>"
+    echo "Usage: ./setup_gitlab.sh <token>"
     exit 1
 fi
 #### todo project folder name, token as var
@@ -15,7 +15,7 @@ GIT_PROJECT="bonus_app"
 GITLAB_TOKEN=$1
 
 response=$(curl --write-out "%{http_code}" --silent --output /dev/null \
-  --header "PRIVATE-TOKEN:$GITLAB_TOKEN" -X POST "http://gitlab.iot.gitlab.com/api/v4/projects" \
+  --header "PRIVATE-TOKEN:$GITLAB_TOKEN" -X POST "http://gitlab.iot.com/api/v4/projects" \
   --form "name=$GIT_PROJECT" \
   --form "visibility=public")
 
@@ -60,7 +60,7 @@ rm -rf .git
 git init --initial-branch=main
 git config --local user.name "Administrator"
 git config --local user.email "rchelsea@student.42.fr"
-git remote add origin http://gitlab.iot.gitlab.com/root/$GIT_PROJECT.git
+git remote add origin http://gitlab.iot.com/root/$GIT_PROJECT.git
 git add .
 git commit -m "Initial commit"
 

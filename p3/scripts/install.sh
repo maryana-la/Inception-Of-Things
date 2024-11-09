@@ -6,7 +6,8 @@ sudo apt-get install -y apt-transport-https ca-certificates curl software-proper
 if ! command -v docker &> /dev/null
 then
     sudo curl -fsSL https://get.docker.com -o get-docker.sh
-    sh get-docker.sh
+    sudo chmod +x get-docker.sh
+    sudo sh get-docker.sh
     sudo usermod -aG docker $USER
     echo "Docker installed. Please restart the terminal."
 else
