@@ -4,7 +4,8 @@
 
 
 if [ $# -ne 1 ]; then
-    echo "Please provide gitlab token to proceed.\nUsage: ./*.sh <token>"
+    echo "Please provide gitlab token to proceed."
+    echo "Usage: ./*.sh <token>"
     exit 1
 fi
 #### todo project folder name, token as var
@@ -27,17 +28,17 @@ fi
 #   --form "visibility=public"
 
  
- GITLAB_PASS=$(sudo kubectl get secret gitlab-gitlab-initial-root-password -n gitlab -o jsonpath="{.data.password}" | base64 --decode)
- sudo echo " gitlab.iot.gitlab.com
- login root
- password ${GITLAB_PASS}" > ~/.netrc
- sudo cp ~/.netrc /root/
- sudo chmod 600 /root/.netrc ~/.netrc
- sudo chmod ~/.netrc
+#  GITLAB_PASS=$(sudo kubectl get secret gitlab-gitlab-initial-root-password -n gitlab -o jsonpath="{.data.password}" | base64 --decode)
+#  sudo echo " gitlab.iot.gitlab.com
+#  login root
+#  password ${GITLAB_PASS}" > ~/.netrc
+#  sudo cp ~/.netrc /root/
+#  sudo chmod 600 /root/.netrc ~/.netrc
+#  sudo chmod ~/.netrc
 
 
 #Клонируйте репозиторий с GitHub в локальную директорию:
-git clone https://github.com/OlgaKush512/okushnir_IoT.git app_temp
+git clone https://github.com/maryana-la/IOTbonus_app.git app_temp
 
 if [ $? -ne 0 ]; then
   echo "Failed to clone repository."

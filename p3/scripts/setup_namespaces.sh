@@ -53,7 +53,7 @@ sudo kubectl apply -f ../confs/argocd-app.yaml
 while true; do
     sudo kubectl port-forward svc/svc-wil-playground -n dev 8888:8888 >/dev/null 2>&1 &
     sleep 20
-done
+done &
 
 
 # doen't work for me
