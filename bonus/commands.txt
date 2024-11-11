@@ -1,3 +1,11 @@
+vagrant up
+vagrant halt
+vagrant destroy
+vagrant reload
+vagrant ssh
+
+
+
 kubectl get pods -n gitlab
 
 # Если есть поды в статусах CrashLoopBackOff или Error, посмотрите их логи для диагностики:

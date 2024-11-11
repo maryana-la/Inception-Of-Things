@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Checking K3D cluster..."
-k3d cluster list
+sudo k3d cluster list
 
 echo "Checking Kubeconfig..."
 kubectl config current-context

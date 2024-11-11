@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Функция для удаления пакетов
 uninstall_package() {
     local package_name=$1
     if command -v $package_name &> /dev/null; then

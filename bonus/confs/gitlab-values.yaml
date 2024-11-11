@@ -1,7 +1,7 @@
 # - Minimized CPU/Memory load, can fit into 3 CPU, 6 GB of RAM (barely)
 # - Services that are not compatible with how Minikube runs are disabled
 # - Some services entirely removed, or scaled down to 1 replica.
-# - Configured to use 192.168.99.100, and nip.io for the domain
+# - Configured to use 192.168.99.100, and iot.com for the domain
 
 # Minimal settings
 global:
@@ -9,8 +9,8 @@ global:
     configureCertmanager: false
     class: "nginx"
   hosts:
-    domain: 192.168.99.100.nip.io
-    externalIP: 192.168.99.100
+    https: false
+    domain: iot.com
   # Disable Rails bootsnap cache (temporary)
   rails:
     bootsnap:
@@ -30,6 +30,7 @@ prometheus:
   install: false
 gitlab-runner:
   install: false
+  
 # Reduce replica counts, reducing CPU & memory requirements
 gitlab:
   webservice:
@@ -41,8 +42,6 @@ gitlab:
   gitlab-shell:
     minReplicas: 1
     maxReplicas: 1
-    # Map gitlab-shell to a high-numbered NodePort to support cloning over SSH since
-    # Minikube takes port 22.
     service:
       type: NodePort
       nodePort: 32022

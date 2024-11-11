@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/OlgaKush512/okushnir_IoT.git'
+    repoURL: 'https://github.com/maryana-la/IOTbonus_app.git'
     targetRevision: HEAD
     path: '.'
   destination:
