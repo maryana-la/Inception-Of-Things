@@ -47,5 +47,3 @@ while true; do
     sudo kubectl port-forward svc/svc-wil-playground -n dev 8888:8888 >/dev/null 2>&1 &
     sleep 20
 done &
-
-sudo argocd app sync my-app

@@ -11,7 +11,6 @@ sudo kubectl create namespace gitlab
 # install gitlab with helm
 sudo helm repo add gitlab https://charts.gitlab.io
 sudo helm repo update
-# sudo helm pull gitlab/gitlab --untar
 
 sudo helm upgrade --install gitlab gitlab/gitlab \
   --namespace gitlab \

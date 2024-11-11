@@ -9,7 +9,7 @@ then
     sudo chmod +x get-docker.sh
     sudo sh get-docker.sh
     sudo usermod -aG docker $USER
-    echo "Docker installed. Please restart the terminal."
+    echo "Docker installed."
 else
     echo "Docker is already installed."
 fi
@@ -42,4 +42,4 @@ else
     echo "Argo CD CLI is already installed."
 fi
 
-echo "Installation completed. Please restart terminal."
+echo "Installation completed."
