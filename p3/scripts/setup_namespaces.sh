@@ -43,18 +43,9 @@ sudo kubectl config set-context --current --namespace=argocd
 
 sudo kubectl apply -f ../confs/argocd-app.yaml
 
-# sudo argocd app create my-app \
-#   --repo https://github.com/maryana-la/IOTbonus_app.git \
-#   --path . \
-#   --dest-server https://kubernetes.default.svc \
-#   --dest-namespace dev \
-#   --sync-policy automated
-
 while true; do
     sudo kubectl port-forward svc/svc-wil-playground -n dev 8888:8888 >/dev/null 2>&1 &
     sleep 20
 done &
 
-
-# doen't work for me
 sudo argocd app sync my-app
