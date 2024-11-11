@@ -11,7 +11,6 @@ global:
   hosts:
     https: false
     domain: iot.com
-    # externalIP: 192.168.99.100
   # Disable Rails bootsnap cache (temporary)
   rails:
     bootsnap:

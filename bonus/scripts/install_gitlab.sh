@@ -14,7 +14,6 @@ sudo helm repo update
 # sudo helm pull gitlab/gitlab --untar
 
 sudo helm upgrade --install gitlab gitlab/gitlab \
-  --timeout 1000s \
   --namespace gitlab \
   -f ../confs/gitlab-values.yaml \
   --set global.hosts.domain=gitlab.iot.com \
@@ -31,8 +30,6 @@ sudo echo "127.0.0.1 gitlab.iot.com" | sudo tee -a "/etc/hosts" > /dev/null
 
 # waiting for gitlab to be ready
 sudo kubectl wait --for=condition=available --timeout=1800s deployment/gitlab-webservice-default -n gitlab
-
-# forward gitlab ports or apply service (could be cleaner)
 
 while true; do
     sudo kubectl port-forward svc/gitlab-webservice-default -n gitlab 80:8181 --address="0.0.0.0" >/dev/null 2>&1 &
